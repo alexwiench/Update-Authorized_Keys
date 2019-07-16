@@ -39,7 +39,9 @@ fi
 
 echo "Importing public keys from $githubname"
 
-authorized_keys="/home/${USER}/.ssh/authorized_keys"
+pathtossh=$(find ~ -name ".ssh")
+authorized_keys=$pathtossh/authorized_keys
+#authorized_keys="/home/${USER}/.ssh/authorized_keys"
 keyalreadyexisted=0
 keyadded=0
 
