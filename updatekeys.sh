@@ -15,9 +15,16 @@ if [ "$dependencyfail" == "fails" ]; then
 exit 1
 fi
 
-#Script start
-echo "What is your Github username?"
-read githubname
+#Check for command line arugment
+if [ "$1" != "" ]; then
+  githubname="$1"
+  
+  else
+  #Script start
+  echo "What is your Github username?"
+  read githubname
+
+fi
 
 #Gets Keys
 pubkeys=$(curl -s https://github.com/$githubname.keys | grep "ssh-rsa")
