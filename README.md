@@ -1,5 +1,5 @@
 # Update-Public-Keys
-A short bash script that pulls your public keys from Github and adds them to your ssh authorized_keys file.
+A short bash script that pulls your public keys from Github and adds them to the ssh authorized_keys file of your current user.
 
 ## How to run
 
@@ -11,4 +11,6 @@ You can also use your username as a command line arugment for automating or quic
 
 Example: `./updatekeys.sh username`
 
-Run on the fly: `curl -fsSL https://raw.githubusercontent.com/alexwiench/Update-Public-Keys/master/updatekeys.sh | bash -s username`
+Run without downloading:
+
+`curl -fsSL https://raw.githubusercontent.com/alexwiench/Update-Public-Keys/master/updatekeys.sh | bash -s username`
