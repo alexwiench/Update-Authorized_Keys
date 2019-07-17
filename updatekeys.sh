@@ -39,7 +39,48 @@ fi
 
 echo "Importing public keys from $githubname"
 
-authorized_keys="/home/${USER}/.ssh/authorized_keys"
+#find path to .ssh folder
+numberofssh=$( find /home -name ".ssh" 2>/dev/null | grep -c '^' ) 
+
+#find out if there are multiple .ssh folders
+if [ "$numberofssh" == 0 ]; then
+  #create directory
+  pathtossh="/home/${USER}/.ssh"
+  echo "Can't find .ssh folder, will create one at "$pathtossh""
+  mkdir $pathtossh
+
+  elif [ "$numberofssh" == 1 ]; then
+  #use directory
+  pathtossh=$(find /home -name ".ssh" 2>/dev/null)
+
+  else
+  #pick directory
+  echo "Which location do you want to add keys too? (type a number)"
+    for sshlocation in $(find /home -name ".ssh" 2>/dev/null); do
+    j=$(( $j + 1))
+    echo "$j. "$sshlocation""
+    done
+
+  read sshlocationchoice
+
+  #validate input or at least let it crash more gracefully
+  if [ "$sshlocationchoice" -le "$j" ]; then
+    echo ""
+  else
+    echo "Try typing a displayed number."
+    exit 1
+  fi
+    #count up to picked directory
+    for sshlocation in $(find /home -name ".ssh" 2>/dev/null); do
+    k=$(( $k + 1))
+      if [ $k == $sshlocationchoice ]; then
+      pathtossh="$sshlocation"
+      fi
+    done
+
+fi
+
+authorized_keys="$pathtossh"/authorized_keys
 keyalreadyexisted=0
 keyadded=0
 
@@ -61,5 +102,5 @@ for key in $pubkeys; do
 done
 
 #Status
-echo "$keyadded keys were added. $keyalreadyexisted keys already existed"
+echo "$keyadded keys were added to "$authorized_keys". $keyalreadyexisted keys already existed."
 exit 0
