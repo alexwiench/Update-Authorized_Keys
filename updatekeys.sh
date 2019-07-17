@@ -40,8 +40,11 @@ fi
 echo "Importing public keys from $githubname"
 
 #find path to .ssh folder
-numberofssh=$( find /home -name ".ssh" 2>/dev/null | grep -c '^' ) 
+numberofssh=$( find /home -name ".ssh" 2>/dev/null | grep -c '.ssh' ) 
 
+echo $numberofssh
+
+exit 0
 #find out if there are multiple .ssh folders
 if [ "$numberofssh" == 0 ]; then
   #create directory
