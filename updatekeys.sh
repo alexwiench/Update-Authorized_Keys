@@ -2,7 +2,7 @@
 IFS=$'\n'
 
 #check for dependencies
-dependencies=(echo read test grep curl)
+dependencies=(echo read test type grep curl)
 
 for i in "${dependencies[@]}"; do
   if ! type $i >/dev/null 2>&1; then
