@@ -2,7 +2,7 @@
 IFS=$'\n'
 
 #check for dependencies
-dependencies=(echo read test grep curl)
+dependencies=(echo read test type grep curl)
 
 for i in "${dependencies[@]}"; do
   if ! type $i >/dev/null 2>&1; then
@@ -26,6 +26,9 @@ if [ "$1" != "" ]; then
 
 fi
 
+#sanitize input
+githubname=${githubname//[^a-zA-Z0-9-]/}
+
 #Gets Keys
 pubkeys=$(curl -s https://github.com/$githubname.keys | grep "ssh-rsa")
 #grep just protects from curl garbage if it returns an unuseful response
@@ -45,7 +48,7 @@ numberofssh=$( find /home -name ".ssh" 2>/dev/null | grep -c '.ssh' )
 #find out if there are multiple .ssh folders
 if [ "$numberofssh" == 0 ]; then
   #create directory
-  pathtossh="/home/${USER}/.ssh"
+  pathtossh="/home/$(logname)/.ssh"
   echo "Can't find .ssh folder, will create one at "$pathtossh""
   mkdir $pathtossh
 
