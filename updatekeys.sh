@@ -42,10 +42,19 @@ echo "Importing public keys from $githubname"
 #find path to .ssh folder
 numberofssh=$( find /home -name ".ssh" 2>/dev/null | grep -c '.ssh' ) 
 
+#rewrite .ssh location as a case
+
+#case "$numberofssh" in
+
+
+
+#esac
+
+
 #find out if there are multiple .ssh folders
 if [ "$numberofssh" == 0 ]; then
   #create directory
-  pathtossh="/home/${USER}/.ssh"
+  pathtossh="/home/${SUDO_USER}/.ssh"
   echo "Can't find .ssh folder, will create one at "$pathtossh""
   mkdir $pathtossh
 
