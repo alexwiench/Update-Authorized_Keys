@@ -54,7 +54,7 @@ numberofssh=$( find /home -name ".ssh" 2>/dev/null | grep -c '.ssh' )
 #find out if there are multiple .ssh folders
 if [ "$numberofssh" == 0 ]; then
   #create directory
-  pathtossh="/home/${SUDO_USER}/.ssh"
+  pathtossh="/home/$(logname)/.ssh"
   echo "Can't find .ssh folder, will create one at "$pathtossh""
   mkdir $pathtossh
 
