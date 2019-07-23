@@ -26,6 +26,9 @@ if [ "$1" != "" ]; then
 
 fi
 
+#sanitize input
+githubname=${githubname//[^a-zA-Z0-9-]/}
+
 #Gets Keys
 pubkeys=$(curl -s https://github.com/$githubname.keys | grep "ssh-rsa")
 #grep just protects from curl garbage if it returns an unuseful response
@@ -41,15 +44,6 @@ echo "Importing public keys from $githubname"
 
 #find path to .ssh folder
 numberofssh=$( find /home -name ".ssh" 2>/dev/null | grep -c '.ssh' ) 
-
-#rewrite .ssh location as a case
-
-#case "$numberofssh" in
-
-
-
-#esac
-
 
 #find out if there are multiple .ssh folders
 if [ "$numberofssh" == 0 ]; then
