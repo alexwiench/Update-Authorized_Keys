@@ -1,6 +1,5 @@
 #!/bin/bash
 
-#what does this do?
 IFS=$'\n'
 
 _dependencyCheck () { 
@@ -41,49 +40,46 @@ _githubUsername () {
   if [ "$1" != "" ]; then
     githubname="$1"
   else
-    echo "What is your Github username?"
+    echo "What is your Github username? (No spaces)"
     read -r githubname
   fi
   #sanitize input
   githubname=${githubname//[^a-zA-Z0-9-]/}
 }
 
-#THIS IS THE ISSUE. SSH-RSA ISN'T SOMETHING I CAN ASSUME ANYMORE.
-#Gets Keys
 _downloadKeys () {
-  pubkeys=$(curl -s https://github.com/$githubname.keys | grep "ssh-rsa")
-  #grep just protects from curl garbage if it returns an unuseful response
-
+  githubResponse=$(curl -s https://github.com/"$githubname".keys) 
+  
   #Check username validity
-  if [ "$pubkeys" = "Not Found" ]; then
+  if [ "$githubResponse" = "Not Found" ] || [ "$githubResponse" = "" ]; then
     echo "No keys found for $githubname."
     echo "Check your spelling or add public keys to Github here https://github.com/settings/keys"
     exit 1
+  else
+    githubResponse=$(echo "$githubResponse" | grep -E "ssh|ecdsa")
   fi
-
-  echo "Importing public keys from $githubname"
 }
 
 
 _writeKeys() {
-authorized_keys="$pathtossh"/authorized_keys
-keyalreadyexisted=0
-keyadded=0
+  authorized_keys="$HOME/.ssh/authorized_keys"
+  keyalreadyexisted=0
+  keyadded=0
 
-for key in $pubkeys; do
-  if grep -qxF "$key" "$authorized_keys"; then
-  keyalreadyexisted=$(( $keyalreadyexisted + 1 ))
+  for key in $githubResponse; do
+    if grep -qxF "$key" "$authorized_keys"; then
+    keyalreadyexisted=$(( $keyalreadyexisted + 1 ))
 
-  else
-  echo "$key" >> "$authorized_keys"
-  keyadded=$(( $keyadded + 1 ))
+    else
+    echo "$key" >> "$authorized_keys"
+    keyadded=$(( $keyadded + 1 ))
 
-  fi
+    fi
 
-done
+  done
 
-#Status
-echo "$keyadded keys were added to "$authorized_keys". $keyalreadyexisted keys already existed."
+  #Status
+  echo "$keyadded keys were added to $authorized_keys. $keyalreadyexisted keys already existed."
 }
  
  _runscript(){
