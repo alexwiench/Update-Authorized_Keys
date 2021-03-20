@@ -2,7 +2,7 @@
 IFS=$'\n'
 
 _dependencyCheck () { 
-  dependencies=("echo" "read" "test" "type" "grep" "curl")
+  dependencies=( "read" "test" "type" "grep" "curl" "logname" "id")
 for i in "${dependencies[@]}"; do
     if ! type "$i" >/dev/null 2>&1; then
     echo "Missing a dependency! Please install $i before using this script."
@@ -11,16 +11,11 @@ fi
   done
 }
 
-#Sets $githubname variable
-_githubUsername () {
-if [ "$1" != "" ]; then
-  githubname="$1"
-  else
-  echo "What is your Github username?"
-    read -r githubname
+_isUserRoot() {
+  if [ "$(id -un)" != "$(logname)" ]; then
+      echo "This script is not designed to be run with sudo."
+      exit 1
 fi
-#sanitize input
-githubname=${githubname//[^a-zA-Z0-9-]/}
 }
 
 #Gets Keys
