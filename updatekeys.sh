@@ -2,18 +2,17 @@
 IFS=$'\n'
 
 #check for dependencies
-dependencies=(echo read test type grep curl)
+_dependencyCheck () { 
+
+  dependencies=("echo" "read" "test" "type" "grep" "curl")
 
 for i in "${dependencies[@]}"; do
-  if ! type $i >/dev/null 2>&1; then
-  echo "Missing a dependency! Please install $i before using this script"
-  dependencyfail="fails"
-  fi
-done
-
-if [ "$dependencyfail" == "fails" ]; then
+    if ! type "$i" >/dev/null 2>&1; then
+    echo "Missing a dependency! Please install $i before using this script."
 exit 1
 fi
+  done
+}
 
 #Check for command line arugment
 if [ "$1" != "" ]; then
