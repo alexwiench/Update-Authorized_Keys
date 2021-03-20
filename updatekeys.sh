@@ -1,11 +1,8 @@
 #!/bin/bash
 IFS=$'\n'
 
-#check for dependencies
 _dependencyCheck () { 
-
   dependencies=("echo" "read" "test" "type" "grep" "curl")
-
 for i in "${dependencies[@]}"; do
     if ! type "$i" >/dev/null 2>&1; then
     echo "Missing a dependency! Please install $i before using this script."
@@ -14,19 +11,17 @@ fi
   done
 }
 
-#Check for command line arugment
+#Sets $githubname variable
+_githubUsername () {
 if [ "$1" != "" ]; then
   githubname="$1"
-  
   else
-  #Script start
   echo "What is your Github username?"
-  read githubname
-
+    read -r githubname
 fi
-
 #sanitize input
 githubname=${githubname//[^a-zA-Z0-9-]/}
+}
 
 #Gets Keys
 pubkeys=$(curl -s https://github.com/$githubname.keys | grep "ssh-rsa")
