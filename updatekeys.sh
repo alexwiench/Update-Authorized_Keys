@@ -6,7 +6,7 @@ _dependencyCheck () {
   dependencies=( "read" "test" "type" "grep" "curl" "logname" "id" "touch")
   for i in "${dependencies[@]}"; do
     if ! type "$i" >/dev/null 2>&1; then
-      echo "Missing a dependency! Please install $i before using this script."
+      echo "Missing a dependency! Please install $i before using this script. "
       exit 1
     fi
   done
@@ -14,7 +14,7 @@ _dependencyCheck () {
 
 _isUserRoot() {
   if [ "$(id -un)" != "$(logname)" ]; then
-      echo "This script is not designed to be run with sudo."
+      echo "This script is not designed to be run with sudo. "
       exit 1
   fi
 }
@@ -22,10 +22,11 @@ _isUserRoot() {
 _sshLocation(){
   unset userinput
   if [ ! -f "$HOME/.ssh/authorized_keys" ]; then
-      echo "$HOME/.ssh/authorized_keys does not exist. Create it? (Y/N)"
+      echo "$HOME/.ssh/authorized_keys does not exist. Create it? (Y/N) "
       read -n 1 -r userinput
+      echo
       if [[ ! $userinput =~ ^[Yy]$ ]]; then
-          echo "Can not add keys without creating $HOME/.ssh/authorized_keys. Script will exit now."
+          echo "Can not add keys without creating $HOME/.ssh/authorized_keys. Script will exit now. "
           exit 1
       else
           if [ ! -d "$HOME/.ssh/" ]; then
@@ -40,7 +41,7 @@ _githubUsername () {
   if [ "$1" != "" ]; then
     githubname="$1"
   else
-    echo "What is your Github username? (No spaces)"
+    echo "What is your Github username? (No spaces) "
     read -r githubname
   fi
   #sanitize input
@@ -52,8 +53,8 @@ _downloadKeys () {
   
   #Check username validity
   if [ "$githubResponse" = "Not Found" ] || [ "$githubResponse" = "" ]; then
-    echo "No keys found for $githubname."
-    echo "Check your spelling or add public keys to Github here https://github.com/settings/keys"
+    echo "No keys found for $githubname. "
+    echo "Check your spelling or add public keys to Github here https://github.com/settings/keys "
     exit 1
   else
     githubResponse=$(echo "$githubResponse" | grep -E "ssh|ecdsa")
@@ -75,10 +76,8 @@ _writeKeys() {
     keyadded=$((keyadded + 1))
 
     fi
-
   done
 
-  #Status
   echo "$keyadded keys were added to $authorized_keys. $keyalreadyexisted keys already existed."
 }
  
