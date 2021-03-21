@@ -68,11 +68,11 @@ _writeKeys() {
 
   for key in $githubResponse; do
     if grep -qxF "$key" "$authorized_keys"; then
-    keyalreadyexisted=$(( $keyalreadyexisted + 1 ))
+    keyalreadyexisted=$((keyalreadyexisted + 1))
 
     else
     echo "$key" >> "$authorized_keys"
-    keyadded=$(( $keyadded + 1 ))
+    keyadded=$((keyadded + 1))
 
     fi
 
