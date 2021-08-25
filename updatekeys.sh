@@ -61,7 +61,6 @@ _downloadKeys () {
   fi
 }
 
-
 _writeKeys() {
   authorized_keys="$HOME/.ssh/authorized_keys"
   keyalreadyexisted=0
