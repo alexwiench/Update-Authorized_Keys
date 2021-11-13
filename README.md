@@ -2,9 +2,19 @@
 
 A short bash script that pulls your public keys from `github.com/UserName.keys` and adds them to the ssh `authorized_keys` file of your current user.
 
-## How to run
+## Usage
 
-### Download with cURL
+This script can be run with or without arguments.
+`./updatekeys.sh` or `./updatekeys.sh username y`
+
+Adding your GitHub _username_ and _y_ will allow cause this script to run without prompting the user, making it sutible for crontab or startup scripts.
+
+> **Script not running?**
+> Use `chmod +x ./updatekeys.sh` to give it executable permissions.
+
+## How to run on the go
+
+### Download with cURL and run
 
 1. `curl -fsSL https://raw.githubusercontent.com/alexwiench/Update-Authorized_Keys/master/updatekeys.sh -o updatekeys.sh`
 2. `bash ./updatekeys.sh`
@@ -16,8 +26,6 @@ A short bash script that pulls your public keys from `github.com/UserName.keys` 
 
 `bash <(curl -fsSL https://raw.githubusercontent.com/alexwiench/Update-Authorized_Keys/master/updatekeys.sh) username`
 
-> Script output is difficult to read due to cURL omitting newline characters while using this method.
-
 ---
 
 ### Notes
@@ -26,7 +34,3 @@ A short bash script that pulls your public keys from `github.com/UserName.keys` 
 
 This script is only designed to modify the `authorized_keys` file in the `$HOME` directory of your **current user** and will abort if it detects `sudo`.
 Use `su` to switch users if you must.
-
-#### Crontab
-
-This script is not currently suitable for crontab usage. Script will hang in a situation where `~/.ssh/authorized_keys` does not yet exist for the current user.
