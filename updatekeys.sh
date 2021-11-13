@@ -21,7 +21,7 @@ _isUserRoot() {
 
 _checkForYesArgument() {
   unset argYes
-  if [[ "$2" == "y" || "$2" == "yes" ]]; then
+  if [[ "$2" =~ ^[Yy]$ ]]; then
     argYes="y"
   fi
 }
@@ -30,9 +30,13 @@ _sshLocation() {
   unset userinput
   if [ ! -f "$HOME/.ssh/authorized_keys" ]; then
     echo "$HOME/.ssh/authorized_keys does not exist. Create it? (Y/N) "
-    read -n 1 -r userinput
-    echo
-    if [[ ! $userinput =~ ^[Yy]$ || -z "$argYes" ]]; then
+    if [[ "$argYes" =~ ^[Yy]$ ]]; then
+      userinput="y"
+    else
+      read -n 1 -r userinput
+      echo
+    fi
+    if [[ ! $userinput =~ ^[Yy]$ ]]; then
       echo "Can not add keys without creating $HOME/.ssh/authorized_keys. Script will exit now. "
       exit 1
     else
@@ -90,12 +94,12 @@ _writeKeys() {
 _runscript() {
   _dependencyCheck
   _isUserRoot
-  _checkForYesArgument
+  _checkForYesArgument "$1" "$2"
   _sshLocation
   _githubUsername "$1"
   _downloadKeys
   _writeKeys
 }
 
-_runscript "$1"
+_runscript "$1" "$2"
 exit 0
