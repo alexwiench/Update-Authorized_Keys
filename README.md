@@ -7,7 +7,7 @@ A short bash script that pulls your public keys from `github.com/UserName.keys` 
 This script can be run with or without arguments.
 `./updatekeys.sh` or `./updatekeys.sh username y`
 
-Adding your GitHub _username_ and _y_ will allow cause this script to run without prompting the user, making it sutible for crontab or startup scripts.
+Adding your GitHub _username_ and _y_ will allow cause this script to run without prompting the user, making it suitable for crontab or startup scripts.
 
 > **Script not running?**
 > Use `chmod +x ./updatekeys.sh` to give it executable permissions.
